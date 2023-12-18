@@ -1,19 +1,12 @@
 const Portfolio = require('../models/portfolio')
+
 //Metodo para listar los portafolios
-
-
 const renderAllPortafolios = async (req,res)=>{
     //Listar todos los portafolios y transformar en objetos lean
     const portfolios = await Portfolio.find().lean()
     //Mandar a la vista los portafolios
     res.render('portafolio/allPortfolios',{portfolios})
 }
-
-
-
-
-
-
 
 //Metodo para guardar en la base de datos
 // const renderAllPortafolios = (req,res)=>{
@@ -29,14 +22,10 @@ const renderPortafolioForm = (req,res)=>{
 }
 //Metodo para capturar en la base de datos lo capturado en el form
 const createNewPortafolio =async (req,res)=>{
-    //Desestructurar los datos del REQ.BODY
     const {title, category,description} = req.body
-    //Crear una nueva instancia
     const newPortfolio = new Portfolio({title,category,description})
-    //Guardar en la BDD
     await newPortfolio.save()
-    //Mostrar el resultado
-    res.json({newPortfolio})
+    res.redirect('/portafolios')
 }
 //Metodo para guardar en la base de datos 
 // const createNewPortafolio = (req,res)=>{
@@ -44,16 +33,25 @@ const createNewPortafolio =async (req,res)=>{
 //     res.send("Portafolio almacenado en la BDD")
 // }
 //Metodo para actualizar el formulario
-const renderEditPortafolioForm = (req,res)=>{
-    res.send('Formulario para editar un portafolio')
+const renderEditPortafolioForm =async(req,res)=>{
+    //Consulta del portafolio en BDD con el ID
+    const portfolio = await Portfolio.findById(req.params.id).lean()
+    //Mandar a la vista
+    res.render('portafolio/editPortfolio',{portfolio})
 }
 //Metodo para capturar la informacion y almacenar en la base de datos (Actualizar)
-const updatePortafolio = (req,res)=>{
-    res.send('Editar un portafolio')
+const updatePortafolio = async(req,res)=>{
+    //Capturar los datos del body
+    const {title,category,description}= req.body
+    //Actualizar el portafolio en BDD
+    await Portfolio.findByIdAndUpdate(req.params.id,{title,category,description})
+    //Redireccionar
+    res.redirect('/portafolios')
 }
 //Metodo para eliminar en la base de datos
-const deletePortafolio = (req,res)=>{
-    res.send('Eliminar un nuevo portafolio')
+const deletePortafolio = async(req,res)=>{
+    await Portfolio.findByIdAndDelete(req.params.id)
+    res.redirect('/portafolios')
 }
 
 //Exportación COMMONJS nombrada
