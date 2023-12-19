@@ -10,7 +10,9 @@ router.get('/user/register',renderRegisterForm)
 //Ruta para capturar los datos del formulario y almacenar en BDD
 router.post('/user/register',registerNewUser)
 //Ruta para mostrar el formulario del login
-router.get('/user/login',redirectIfAuthenticated,renderLoginForm)
+// router.get('/user/login',redirectIfAuthenticated,renderLoginForm)
+// Ruta para mostrar el fomrulario de login
+router.get('/user/login', redirectIfAuthenticated, renderLoginForm)
 //Ruta para capturar los datos del formulario y realizar el proceso de login en conjunto con la BDD
 router.post('/user/login',loginUser)
 //Cerrar sesion del usuario

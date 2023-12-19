@@ -10,6 +10,9 @@ const methodOverride = require('method-override')
 const passport = require('passport');
 //Importacion sesion
 const session = require('express-session');
+//Importacion de fileupload
+const fileUpload = require('express-fileupload')
+
 
 // Inicializaciones
 const app = express()
@@ -19,6 +22,12 @@ require('./config/passport')
 app.set('port',process.env.port || 3000)
 app.set('views',path.join(__dirname, 'views'))
 //Configuraciones extras
+//Establecer la carpeta temporal y el directorio
+app.use(fileUpload({
+    useTempFiles : true,
+    tempFileDir : './uploads'
+}));
+
 app.engine('.hbs',engine({
     //Establecer el master page
     defaultLayout:'main',
